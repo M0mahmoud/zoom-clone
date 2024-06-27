@@ -1,3 +1,5 @@
+import MeetingTypeList from "@/components/Meeting/MeetingTypeList";
+
 export default function Home() {
   const now = new Date();
 
@@ -7,7 +9,7 @@ export default function Home() {
   return (
     <section className="flex size-full flex-col gap-5 text-white">
       <div className="h-[303px] w-full rounded-[20px] bg-hero bg-cover">
-        <div className="flex h-full flex-col justify-between max-md:px-5 max-md:py-8 lg:p-11 p-2">
+        <div className="flex h-full flex-col justify-between max-md:px-5 max-md:py-8 lg:p-11 px-3 py-5">
           <h2 className="glassmorphism max-w-[273px] rounded py-2 text-center text-base font-normal">Upcoming Meeting at: 12:30 PM</h2>
           <div className="flex flex-col gap-2">
             <h1 className="text-4xl font-extrabold lg:text-7xl">{time}</h1>
@@ -15,6 +17,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <MeetingTypeList />
     </section>
   );
 }
