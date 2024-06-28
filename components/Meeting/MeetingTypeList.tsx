@@ -31,7 +31,7 @@ const MeetingTypeList = () => {
         toast({ title: "Please select a date and time" });
         return;
       }
-      const id = crypto.randomUUID();
+      const id = new Date().getTime().toString();
       const call = client.call("default", id);
       if (!call) throw new Error("Failed to create meeting");
       const startsAt = values.dateTime.toISOString() || new Date(Date.now()).toISOString();
