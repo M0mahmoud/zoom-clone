@@ -90,6 +90,7 @@ const MeetingTypeList = () => {
           handleClick={() => {
             const meetingLink = `${process.env.NEXT_PUBLIC_PRODUCTION_URL}meeting/${callDetail?.id}`;
             navigator.clipboard.writeText(meetingLink);
+            router.push(`/meeting/${callDetail?.id}`);
             toast({ title: "Link Copied" });
           }}
           image={"/icons/checked.svg"}
