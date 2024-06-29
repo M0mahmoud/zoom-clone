@@ -60,8 +60,6 @@ const MeetingTypeList = () => {
     }
   };
 
-  const meetingLink = `https://zoom-clone05.vercel.app/meeting/${callDetail?.id}`;
-
   if (!client || !user) return <Loader />;
   return (
     <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
@@ -90,6 +88,7 @@ const MeetingTypeList = () => {
           onClose={() => setMeetingState(undefined)}
           title="Meeting Created"
           handleClick={() => {
+            const meetingLink = `${process.env.NEXT_PUBLIC_PRODUCTION_URL}meeting/${callDetail?.id}`;
             navigator.clipboard.writeText(meetingLink);
             toast({ title: "Link Copied" });
           }}
