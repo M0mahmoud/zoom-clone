@@ -1,11 +1,17 @@
 "use client";
+import Alert from "@/components/Alert";
 import { Button } from "@/components/ui/button";
-import middleware from "@/middleware";
-import { DeviceSettings, useCall, VideoPreview } from "@stream-io/video-react-sdk";
+import { DeviceSettings, useCall, useCallStateHooks, VideoPreview } from "@stream-io/video-react-sdk";
 import React, { useEffect, useState } from "react";
 
 const MeetingSetup = ({ setIsSetupComplete }: { setIsSetupComplete: (value: boolean) => void }) => {
   const [isMicCamToggled, setIsMicCamToggled] = useState(false);
+
+  const { useCallStartedAt, useCallEndedAt } = useCallStateHooks();
+  const callStartsAt = useCallStartedAt();
+  const callEndedAt = useCallEndedAt();
+  const callTimeNotArrived = callStartsAt && new Date(callStartsAt) > new Date();
+  const callHasEnded = !!callEndedAt;
 
   const call = useCall();
   if (!call) {
@@ -21,6 +27,10 @@ const MeetingSetup = ({ setIsSetupComplete }: { setIsSetupComplete: (value: bool
       call?.microphone.enable();
     }
   }, [isMicCamToggled, call?.camera, call?.microphone]);
+
+  if (callTimeNotArrived) return <Alert title={`Your Meeting has not started yet. It is scheduled for ${callStartsAt.toLocaleString()}`} />;
+
+  if (callHasEnded) return <Alert title="The call has been ended by the host" iconUrl="/icons/call-ended.svg" />;
 
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center gap-3 text-white">
