@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import Loader from "../Loader";
+import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { useToast } from "../ui/use-toast";
 import HomeCard from "./HomeCard";
@@ -50,9 +51,11 @@ const MeetingTypeList = () => {
       setCallDetail(call);
       if (!values.description) {
         router.push(`/meeting/${call.id}`);
+        navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_PRODUCTION_URL}meeting/${call?.id}`);
       }
       toast({
         title: "Meeting Created :)",
+        description: "Meeting Link Copied",
       });
     } catch (error) {
       console.error(error);
@@ -70,6 +73,19 @@ const MeetingTypeList = () => {
 
       {/* MeetingModal */}
       <MeetingModal isOpen={meetingState === "isInstantMeeting"} onClose={() => setMeetingState(undefined)} title="Start an Instant Meeting" className="text-center" buttonText="Start Meeting" handleClick={createMeeting} />
+
+      <MeetingModal
+        isOpen={meetingState === "isJoiningMeeting"}
+        onClose={() => setMeetingState(undefined)}
+        title="Type the link here"
+        className="text-center"
+        buttonText="Start Meeting"
+        handleClick={() => {
+          router.push(values.link);
+        }}
+      >
+        <Input placeholder="Meeting link" onChange={(e) => setValues({ ...values, link: e.target.value })} className="border-none bg-dark-3 focus-visible:ring-0 focus-visible:ring-offset-0" />
+      </MeetingModal>
 
       {!callDetail ? (
         <MeetingModal isOpen={meetingState === "isScheduleMeeting"} onClose={() => setMeetingState(undefined)} title="Create Meeting" handleClick={createMeeting} className="text-center" buttonText="Start Meeting">
